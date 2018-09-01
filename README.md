@@ -8,7 +8,7 @@ It will provide:
 * A report on aggreagate profit-and-loss from all trades by year, and by short-term vs long-term gains
 * A report on all errors encountered in the process
 
-It supports trades from all the major US Exchanges and some international exchanges
+It supports trades from all the major US Exchanges and some international exchanges via `csv` and `xlsx` trading history files.
 * Coinbase
 * Coinbase Pro
 * Binance
@@ -26,7 +26,7 @@ It supports trades from all the major US Exchanges and some international exchan
 These instructions will get you a copy of the project up and running on your local machine, and guidance on how to obtain your own tax reports.
 1. Download this repo to your local machine
 2. Go to each supported exchange for which you have trades and download a `csv` or `xlsx` of your trade history
-3. Put these `csv` or `xlsx` files into the appropriate folder inside the `data/` directory (the program will automatically parse all files in the correct folders)
+3. Put these `csv` or `xlsx` files into the appropriate folder inside the `data/` directory (the program will automatically parse *all* files in the correct folders)
 4. For any trades that are from unsupported exchanges, or any other manual trades (ICOs, forks, in-person or on-chain trades, etc) populate a spreadsheet with a specific format (see below)
 5. Run the script (see below), which populates 5 files in the `output` folder:
   * `trades.csv`          : Detailed information regarding every trade across all exchanges and currencies
