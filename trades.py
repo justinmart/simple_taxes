@@ -3,7 +3,9 @@ import glob
 import os
 from exchange_parsers.coinbase import CoinbaseParser
 from exchange_parsers.coinbase_pro import CoinbaseProParser
-from exchange_parsers.binance import BinanceParser
+from exchange_parsers.binance_csv import BinanceCsvParser
+from exchange_parsers.binance_xlsx import BinanceXlsxParser
+from exchange_parsers.binance_xlsx_old import BinanceXlsxOldParser
 from exchange_parsers.bitfinex import BitfinexParser
 from exchange_parsers.bittrex import BittrexParser
 from exchange_parsers.poloniex import PoloniexParser
@@ -14,7 +16,9 @@ from exchange_parsers.liqui import LiquiParser
 from exchange_parsers.manual_trades import ManualTradesParser
 
 parsers = {
-    'binance': BinanceParser,
+    'binance_csv': BinanceCsvParser,
+    'binance_xlsx': BinanceXlsxParser,
+    'binance_xlsx_old': BinanceXlsxOldParser,
     'bitfinex': BitfinexParser,
     'bittrex': BittrexParser,
     'circle': CircleParser,
@@ -46,7 +50,11 @@ class Trades():
             print "Processing trades from {}".format(exchange)
             for _file in glob.glob('./data/{}/*'.format(exchange)):
                 filename = self.process_filename(_file)
-                trade, error = parsers[exchange]().run(os.path.join('data', exchange, filename))
+                if filename[0] == '.':
+                    print "Skipping folder in {}".format(exchange)
+                    continue
+                else:
+                    trade, error = parsers[exchange]().run(os.path.join('data', exchange, filename))
                 trades.extend(trade)
                 errors.extend(error)
 

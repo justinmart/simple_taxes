@@ -33,6 +33,10 @@ class ExchangeRates(object):
             if date not in rates:
                 rates[date] = {}
             rates[date][row['currency']] = Decimal(row['rate'])
+            # TODO: Hacky addition of stablecoins. Pegged to $1 for now.
+            if row['currency'] == 'BTC':
+                for _ in ['USDT', 'USDC', 'DAI', 'TUSD', 'GUSD', 'PAX']:
+                    rates[date][_] = Decimal(1)
         return rates
 
     def update_file(self, filename, rates):

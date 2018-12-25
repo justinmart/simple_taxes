@@ -30,18 +30,18 @@ class Taxes():
         trades, errors = self.run_trades()
         self.print_trade_info(trades)
         self.print_errors(errors)
-        pnl, total_pnl = self.run_lifo(trades)
+        pnl, total_pnl, remaining_funds = self.run_lifo(trades)
         tax_reporting_data = self.tax_reporting_data(pnl)
         self.write_files(trades, errors, pnl, total_pnl, tax_reporting_data)
-        return trades, errors, pnl, total_pnl, tax_reporting_data
+        return trades, errors, pnl, total_pnl, tax_reporting_data, remaining_funds
 
     def run_trades(self):
         return Trades().run()
 
     def run_lifo(self, trades):
-        pnl = LIFO().run(trades)
+        pnl, remaining_funds = LIFO().run(trades)
         total_pnl = LIFO().aggregate_pnl(pnl)
-        return pnl, total_pnl
+        return pnl, total_pnl, remaining_funds
 
     def tax_reporting_data(self, pnl):
         columns = ['currency', 'amount', 'buy_date', 'sell_date', 'buy_basis', 'sell_basis', 'pnl', 'long_term']

@@ -1,9 +1,10 @@
 from decimal import Decimal
 from datetime import datetime
 from document_parser import DocumentParser
+from errors import BinanceTradeException
 
 
-class BinanceParser(DocumentParser):
+class BinanceCsvParser(DocumentParser):
     def __init__(self, *args, **kwargs):
         kwargs['exchange_name'] = 'binance'
         kwargs['header'] = {
@@ -15,7 +16,7 @@ class BinanceParser(DocumentParser):
             'price': 'price',
         }
         kwargs['header_rows'] = 0
-        super(BinanceParser, self).__init__(*args, **kwargs)
+        super(BinanceCsvParser, self).__init__(*args, **kwargs)
 
     def process_row(self, row):
         row['created_at'] = self.process_date(row)

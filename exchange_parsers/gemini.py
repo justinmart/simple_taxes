@@ -20,7 +20,11 @@ class GeminiParser(DocumentParser):
 
     def process_row(self, row):
         if row['type'].lower() not in ['buy', 'sell']:
-            raise NotATradeException("Gemini trade is not a buy or sell: %s" % row)
+            raise NotATradeException("Gemini trade is not a buy or sell", row)
+
+        if len(row['_extras']['Symbol']) > 6:
+            raise Exception("Gemini currency is not three letters. \
+                Refactor of gemini currency pair is needed: {}".format(row['_extras']['Symbol']))
 
         row['type'] = row['type'].lower()
         row['created_at'] = self.process_date(row)
@@ -39,15 +43,15 @@ class GeminiParser(DocumentParser):
 
     def process_amount(self, row):
         currency = row['_extras']['Symbol'][:3]
-        amt = str(row['_extras'][currency + ' Amount'])
-        chars = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-        return Decimal(''.join(_ if _ in chars else '' for _ in amt))
+        amt = str(row['_extras'][currency + ' Amount ' + currency])
+        chars = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'e', '-']
+        return abs(Decimal(''.join(_ if _ in chars else '' for _ in amt)))
 
     def process_fill_amount(self, row):
         currency = row['_extras']['Symbol'][3:]
-        amt = str(row['_extras'][currency + ' Amount'])
-        chars = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-        return Decimal(''.join(_ if _ in chars else '' for _ in amt))
+        amt = str(row['_extras'][currency + ' Amount ' + currency])
+        chars = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'e', '-']
+        return abs(Decimal(''.join(_ if _ in chars else '' for _ in amt)))
 
     def process_currency_pair(self, row):
         return row['_extras']['Symbol'][:3] + '-' + row['_extras']['Symbol'][3:]

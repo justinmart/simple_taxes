@@ -17,13 +17,22 @@ class LIFO(object):
     def run(self, trades):
         print "Generating LIFO profit and loss"
         pnl = pd.DataFrame()
+        remaining_funds = pd.DataFrame()
         for currency in trades.currency.unique():
             print "Calculating LIFO for {}".format(currency)
             curr_trades = self.generate_currency_trades(trades, currency)
-            curr_pnl = self.calc_pnl(curr_trades)
+            curr_pnl, curr_rf = self.calc_pnl(curr_trades)
             pnl = self.append_currency_pnl_to_total_pnl(pnl, curr_pnl, currency)
+            remaining_funds = self.append_curr_rem_funds_to_rem_funds(remaining_funds, curr_rf, currency)
         pnl = self.clean_data(pnl)
-        return pnl
+        return pnl, remaining_funds
+
+    def append_curr_rem_funds_to_rem_funds(self, remaining_funds, curr_rf, currency):
+        if not curr_rf:
+            return remaining_funds
+        for _ in curr_rf:
+            remaining_funds = remaining_funds.append(_, ignore_index=True)
+        return remaining_funds
 
     def generate_currency_trades(self, df, currency):
         native = df[df['currency'] == currency][[
@@ -102,7 +111,9 @@ class LIFO(object):
                     elif leftover < 0:
                         sell_amount = abs(leftover)
                         pass
-        return pnl
+
+        remaining_funds = queue
+        return pnl, remaining_funds
 
     def clean_data(self, pnl):
         pnl['long_term'] = pnl['long_term'].apply(lambda _: bool(_) if not np.isnan(_) else np.NaN)

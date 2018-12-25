@@ -123,8 +123,7 @@ class DocumentParser(object):
             if not vendor_name:
                 continue
             trade[native_name] = row.pop(vendor_name)
-            trade['_extras'] = row
-
+        trade['_extras'] = row
         processed_trade = self.process_row(trade)
         self.validate_trade_type(processed_trade)
         processed_trade.update(self.generate_implied_fields(processed_trade))
@@ -133,14 +132,14 @@ class DocumentParser(object):
 
     def validate_trade_type(self, trade):
         if trade['type'] not in ['buy', 'sell']:
-            raise NotATradeException("Trade is not a buy or sell: %s " % trade)
+            raise NotATradeException("Trade is not a buy or sell", trade)
 
     def validate_trade(self, trade):
         self.validate_row(trade)
         if (trade['amount'] < self.small_trade_threshold or \
             trade['fill_amount'] < self.small_trade_threshold) and \
             (trade['platform'] not in self.include_small_trades):
-            raise TradeTooSmallException("Trade amount is too low: %s" % trade)
+            raise TradeTooSmallException("Trade amount is too low", trade)
 
     def generate_implied_fields(self, trade):
         fields = [
@@ -168,7 +167,7 @@ class DocumentParser(object):
         elif trade['type'] == 'sell':
             return 'buy'
         else:
-            raise NotATradeException("Trade is not a buy or sell: %s " % trade)
+            raise NotATradeException("Trade is not a buy or sell", trade)
 
     def generate_native_value_field(self, trade):
         fill_amount = trade['fill_amount']

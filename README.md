@@ -118,7 +118,7 @@ If you would like to explore the data yourself:
 
 `$ from taxes import Taxes`
 
-`$ trades, errors, pnl, total_pnl, tax_reporting_data = Taxes().run()`
+`$ trades, errors, pnl, total_pnl, tax_reporting_data, remaining_funds = Taxes().run()`
 
 
 ## Error Catching
