@@ -41,9 +41,5 @@ class ExchangeRates():
         return rates
 
     def check_api_status(self, response):
-        try:
-            if response.json()['status']['error_message'] == 'API key missing.':
+        if str(response['status']['error_message']) == "API key missing.":
                 raise Exception("API Key Missing. Get free API key from https://coinmarketcap.com/api/ and enter on current_exchange_rates.py")
-        except:
-            pass
-
