@@ -1,7 +1,6 @@
 from decimal import Decimal
 from datetime import datetime
 from document_parser import DocumentParser
-from errors import BinanceTradeException
 
 
 class BinanceXlsxOldParser(DocumentParser):
