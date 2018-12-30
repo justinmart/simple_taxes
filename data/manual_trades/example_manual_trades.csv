@@ -1,0 +1,6 @@
+created_at,platform,amount,type,currency_pair,fill_amount,price
+1/1/2017,in-person-trade,1,buy,BTC-USD,1000,1000
+1/1/2017,in-person-trade,2,buy,ETH-USD,16.50,8.25
+8/1/2017,fork,1,buy,BCH-USD,0,0
+5/31/2017,ico,6400,buy,BAT-ETH,1,207.0,0.000156
+12/1/2018,in-person-trade,1,sell,ETH-USD,115.0,115.0

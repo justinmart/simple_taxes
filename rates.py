@@ -65,8 +65,8 @@ class ExchangeRates(object):
         self.update_file(self.path, new_rates)
 
     def get_max_date(self, rates):
-        max_date = max(rates.keys()) + timedelta(1)
-        if max_date >= datetime.today().date():
+        max_date = max(rates.keys())
+        if max_date + timedelta(1) >= datetime.today().date():
             raise UpdateExchangeRateException("Exchange Rates up to date")
         return max_date
 
@@ -89,7 +89,7 @@ class ExchangeRates(object):
         return rates
 
     def date_range(self, start, end):
-        return [end - timedelta(_) for _ in range(0, (end-start).days)]
+        return [end - timedelta(_) for _ in range(1, (end-start).days)]
 
     def get_url(self, currency, date):
         endpoint = '{}-USD/'.format(currency)
