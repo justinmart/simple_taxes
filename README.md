@@ -132,6 +132,17 @@ Cryptocurrency taxes are complex. It's easy to forget about some trades or other
 
 It's expected that this detailed output will help you remember which purchases you may have forgotten.
 
+## Exchange rates
+If you traded any pairs that Coinbase Pro does not support, you will need to manually enter in the exchange rates for the days you have trades for, in `exchange_rates.csv`
+For example:
+```
+2017-12-21,BNB,0.19305019305019305
+2017-12-20,BNB,0.19305019305019305
+2018-12-15,BNB,0.25
+2018-01-15,BNB,0.0511247443762781g
+```
+Data can be looked up from the `Close` column on `https://coinmarketcap.com/currencies/binance-coin/historical-data/`, then calculating the `1/(rate)`.
+
 ## Authors
 
 * **Justin Mart** - *Developer* - [justinmart](https://github.com/justinmart)

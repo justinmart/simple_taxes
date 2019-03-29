@@ -36,7 +36,7 @@ class BinanceXlsxOldParser(DocumentParser):
             return _date
 
     def process_currency_pair(self, row):
-        quote_pairs = ['BTC', 'ETH', 'USDT']
+        quote_pairs = ['BTC', 'ETH', 'USDT', 'BNB']
         pair = row['currency_pair']
 
         if pair[-3:] in quote_pairs:
