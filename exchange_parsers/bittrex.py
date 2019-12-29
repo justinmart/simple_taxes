@@ -11,7 +11,7 @@ class BittrexParser(DocumentParser):
             'amount': 'Quantity',
             'fill_amount': None,
             'currency_pair': 'Exchange',
-            'type': 'Type',
+            'type': ['Type', 'OrderType'],
             'price': None,
         }
         kwargs['header_rows'] = 0
@@ -36,5 +36,8 @@ class BittrexParser(DocumentParser):
 
     def process_fill_amount(self, row):
         price = abs(Decimal(row['_extras']['Price']))
-        fees = abs(Decimal(row['_extras']['CommissionPaid']))
+        try: 
+            fees = abs(Decimal(row['_extras']['CommissionPaid']))
+        except:
+            fees = abs(Decimal(row['_extras']['Commission']))
         return price - fees

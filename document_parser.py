@@ -42,7 +42,7 @@ class DocumentParser(object):
         'currency_pair': str,
         'type': str,
     }
-    include_small_trades = ['fork', 'ico', 'airdrop', 'gift']
+    include_small_trades = ['fork', 'ico', 'airdrop', 'gift', 'staking rewards', 'coinbase staking', 'coinbase earn']
     small_trade_threshold = Decimal(1E-7)
 
     def __init__(self, exchange_name=None, header=None, header_rows=None):
@@ -66,6 +66,8 @@ class DocumentParser(object):
             return self.open_csv(filename)
         elif filetype == 'xlsx':
             return self.open_xlsx(filename)
+        elif filetype[-5:] == 'other':
+            return
         else:
             raise ValueError("Filetype is neither csv or xlsx: %s" % filetype)
 
@@ -122,8 +124,19 @@ class DocumentParser(object):
         for native_name, vendor_name in self.header.items():
             if not vendor_name:
                 continue
-            trade[native_name] = row.pop(vendor_name)
+            if isinstance(vendor_name, list):
+                for _ in vendor_name:
+                    try:
+                        trade[native_name] = row.pop(_)
+                        success = True
+                        break
+                    except:
+                        continue
+                assert success
+            else:
+                trade[native_name] = row.pop(vendor_name)
         trade['_extras'] = row
+
         processed_trade = self.process_row(trade)
         self.validate_trade_type(processed_trade)
         processed_trade.update(self.generate_implied_fields(processed_trade))
@@ -174,7 +187,8 @@ class DocumentParser(object):
         fill_currency = trade['fill_currency']
         created_at = trade['created_at'].date()
 
-        if fill_currency == 'USD':
+        # TODO: Incorporate real USD value 
+        if fill_currency in ['USD', 'USDC', 'USDT', 'TUSD', 'BUSD', 'DAI']:
             return fill_amount
         else:
             try:

@@ -13,8 +13,9 @@ class ExchangeRates(object):
       This class ingests exchange_rates.csv -- a bare history of [BTC, ETH, USD] exchange rates from 2013 to today.
       The parse_file() function return a parsed dictionary of exchange-rate data.
 
-      The update_exchange_rates() function identifies the most recent date in exchange_rates.csv, and appends recent
-      exchange rate data. This process uses the Coinbase Pro free API, which is rate-limited to 3 calls per second.
+      The update_exchange_rates() function identifies the most recent date in exchange_rates.csv, and appends 
+      exchange rate data from the most recent date up to today. This process uses the Coinbase Pro free API, 
+      which is rate-limited to 3 calls per second.
     """
     def __init__(self):
         self.path = os.path.join('data', 'exchange_rates.csv')
@@ -33,7 +34,7 @@ class ExchangeRates(object):
             if date not in rates:
                 rates[date] = {}
             rates[date][row['currency']] = Decimal(row['rate'])
-            # TODO: Hacky addition of stablecoins. Pegged to $1 for now.
+            # Hacky addition of stablecoins. Pegging to $1 for now. 
             if row['currency'] == 'BTC':
                 for _ in ['USDT', 'USDC', 'DAI', 'TUSD', 'GUSD', 'PAX']:
                     rates[date][_] = Decimal(1)
@@ -65,8 +66,8 @@ class ExchangeRates(object):
         self.update_file(self.path, new_rates)
 
     def get_max_date(self, rates):
-        max_date = max(rates.keys())
-        if max_date + timedelta(1) >= datetime.today().date():
+        max_date = max(rates.keys()) + timedelta(1)
+        if max_date >= datetime.today().date():
             raise UpdateExchangeRateException("Exchange Rates up to date")
         return max_date
 
@@ -89,7 +90,7 @@ class ExchangeRates(object):
         return rates
 
     def date_range(self, start, end):
-        return [end - timedelta(_) for _ in range(1, (end-start).days)]
+        return [end - timedelta(_) for _ in range(0, (end-start).days + 1)]
 
     def get_url(self, currency, date):
         endpoint = '{}-USD/'.format(currency)
