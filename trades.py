@@ -5,20 +5,17 @@ from exchange_parsers.coinbase import CoinbaseParser
 from exchange_parsers.coinbase_pro import CoinbaseProParser
 from exchange_parsers.binance_csv import BinanceCsvParser
 from exchange_parsers.binance_xlsx import BinanceXlsxParser
-from exchange_parsers.binance_xlsx_old import BinanceXlsxOldParser
 from exchange_parsers.bitfinex import BitfinexParser
 from exchange_parsers.bittrex import BittrexParser
 from exchange_parsers.poloniex import PoloniexParser
 from exchange_parsers.kraken import KrakenParser
 from exchange_parsers.gemini import GeminiParser
 from exchange_parsers.circle import CircleParser
-from exchange_parsers.liqui import LiquiParser
 from exchange_parsers.manual_trades import ManualTradesParser
 
 parsers = {
     'binance_csv': BinanceCsvParser,
     'binance_xlsx': BinanceXlsxParser,
-    'binance_xlsx_old': BinanceXlsxOldParser,
     'bitfinex': BitfinexParser,
     'bittrex': BittrexParser,
     'circle': CircleParser,
@@ -26,10 +23,10 @@ parsers = {
     'coinbase_pro': CoinbaseProParser,
     'gemini': GeminiParser,
     'kraken': KrakenParser,
-    'liqui': LiquiParser,
     'poloniex': PoloniexParser,
     'manual_trades': ManualTradesParser,
 }
+
 
 class Trades():
     """

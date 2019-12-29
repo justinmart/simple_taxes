@@ -23,8 +23,7 @@ class GeminiParser(DocumentParser):
             raise NotATradeException("Gemini trade is not a buy or sell", row)
 
         if len(row['_extras']['Symbol']) > 6:
-            raise Exception("Gemini currency is not three letters. \
-                Refactor of gemini currency pair is needed: {}".format(row['_extras']['Symbol']))
+            raise Exception("Gemini currency cannot be split evenly by 3: {}".format(currency))
 
         row['type'] = row['type'].lower()
         row['created_at'] = self.process_date(row)

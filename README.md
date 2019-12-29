@@ -18,7 +18,6 @@ It supports trades from all the major US Exchanges and some international exchan
 * Bitfinex
 * Bittrex
 * Circle
-* Liqui
 * It also supports manual trades via entering them into a spreadsheet and saving a copy as a `.csv`
 
 ## Getting Started
@@ -35,7 +34,8 @@ Once Python 2.7 with Jupyter Notebook and all relevant requirements are installe
 1. Download this repo to your local machine
 2. Go to each supported exchange for which you have trades and download a `csv` or `xlsx` of your trade history
 3. Put these `csv` or `xlsx` files into the appropriate folder inside the `data/` directory (the program will automatically parse *all* files in the correct folders)
-  * For Binance, please note they have recently changed their trade history reports. Put all newly downloaded reports in the `binance_xlsx` folder.
+  * For Binance, please note they have recently changed their trade history reports. **Important** You must pull your "TRADE HISTORY" from Binance (not "Order History"). Put all newly downloaded reports in the `binance_xlsx` folder.
+  * NOTE: In generaly, this tool only works for **USD fiat trades**, if you are buying / selling into another fiat currency (EUR, GBP, etc), then this tool will not work. 
 4. For any trades that are from unsupported exchanges, or any other manual trades (ICOs, forks, in-person or on-chain trades, etc) populate a spreadsheet with a specific format (see below)
 5. Run the script (see below), which populates 5 files in the `output` folder:
   * `trades.csv`          : Detailed information regarding every trade across all exchanges and currencies
