@@ -11,12 +11,12 @@ class CoinbaseParser(DocumentParser):
         kwargs['header'] = {
             'created_at': 'Timestamp',
             'amount': 'Quantity Transacted',
-            'fill_amount': 'USD Amount Transacted (Inclusive of Coinbase Fees)',
+            'fill_amount': 'USD Total (inclusive of fees)',
             'currency_pair': 'Asset',
             'type': 'Transaction Type',
             'price': 'USD Spot Price at Transaction'
         }
-        kwargs['header_rows'] = 3
+        kwargs['header_rows'] = 0
         super(CoinbaseParser, self).__init__(*args, **kwargs)
 
     def process_row(self, row):
@@ -28,7 +28,7 @@ class CoinbaseParser(DocumentParser):
                 "and manually remove these trades from your coinbase.csv trades file. \n"
                 "Trade: %s" % row['_extras']['Notes'])
         else:
-            row['created_at'] = datetime.strptime(row['created_at'], '%m/%d/%Y')
+            row['created_at'] = datetime.strptime(row['created_at'], '%Y-%m-%dT%H:%M:%SZ')
             row['type'] = row['type'].lower()
             row['currency_pair'] = row['currency_pair'] + '-USD'
 
