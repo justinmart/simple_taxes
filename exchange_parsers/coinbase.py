@@ -16,7 +16,7 @@ class CoinbaseParser(DocumentParser):
             'type': 'Transaction Type',
             'price': 'USD Spot Price at Transaction'
         }
-        kwargs['header_rows'] = 0
+        kwargs['header_rows'] = 7
         super(CoinbaseParser, self).__init__(*args, **kwargs)
 
     def process_row(self, row):
